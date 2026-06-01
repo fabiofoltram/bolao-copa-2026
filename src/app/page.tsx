@@ -1,34 +1,50 @@
-import Link from 'next/link'
+'use client'
+
+import { useState } from 'react'
+import AbaJogos from '@/components/AbaJogos'
+import AbaBoloes from '@/components/AbaBoloes'
 
 export default function Home() {
+  const [aba, setAba] = useState<'boloes' | 'jogos'>('boloes')
+
   return (
-    <main className="min-h-screen bg-gradient-to-b from-green-700 to-green-900 text-white">
-      <div className="max-w-4xl mx-auto px-6 py-16">
-        <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold mb-4">Bolão Copa 2026</h1>
-          <p className="text-green-200 text-xl">Gerencie seus palpites da Copa do Mundo 2026</p>
+    <div className="min-h-screen bg-green-900 flex flex-col">
+      {/* Header */}
+      <header className="bg-green-950 shadow-lg">
+        <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <span className="text-2xl">⚽</span>
+            <h1 className="text-white font-bold text-xl tracking-tight">Bolão Copa 2026</h1>
+          </div>
+          <nav className="flex gap-1">
+            <button
+              onClick={() => setAba('boloes')}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                aba === 'boloes'
+                  ? 'bg-white text-green-900'
+                  : 'text-green-200 hover:bg-green-800'
+              }`}
+            >
+              🏆 Bolões
+            </button>
+            <button
+              onClick={() => setAba('jogos')}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                aba === 'jogos'
+                  ? 'bg-white text-green-900'
+                  : 'text-green-200 hover:bg-green-800'
+              }`}
+            >
+              📋 Tabela de Jogos
+            </button>
+          </nav>
         </div>
+      </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Link href="/boloes" className="bg-white/10 hover:bg-white/20 rounded-2xl p-8 text-center transition-colors">
-            <div className="text-4xl mb-4">🏆</div>
-            <h2 className="text-2xl font-semibold mb-2">Bolões</h2>
-            <p className="text-green-200">Crie e gerencie seus grupos de bolão</p>
-          </Link>
-
-          <Link href="/jogos" className="bg-white/10 hover:bg-white/20 rounded-2xl p-8 text-center transition-colors">
-            <div className="text-4xl mb-4">⚽</div>
-            <h2 className="text-2xl font-semibold mb-2">Jogos</h2>
-            <p className="text-green-200">Veja todos os jogos e registre seus chutes</p>
-          </Link>
-
-          <Link href="/sugestoes" className="bg-white/10 hover:bg-white/20 rounded-2xl p-8 text-center transition-colors">
-            <div className="text-4xl mb-4">🤖</div>
-            <h2 className="text-2xl font-semibold mb-2">Sugestões IA</h2>
-            <p className="text-green-200">Receba sugestões de palpites com IA</p>
-          </Link>
-        </div>
-      </div>
-    </main>
+      {/* Conteúdo */}
+      <main className="flex-1 max-w-5xl w-full mx-auto px-4 py-6">
+        {aba === 'boloes' ? <AbaBoloes /> : <AbaJogos />}
+      </main>
+    </div>
   )
 }

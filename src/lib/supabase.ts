@@ -5,6 +5,14 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
+export type Time = {
+  id: number
+  nome: string
+  codigo: string
+  grupo_id: number | null
+  bandeira_url: string | null
+}
+
 export type Jogo = {
   id: number
   time_casa_id: number
@@ -18,18 +26,11 @@ export type Jogo = {
   time_fora?: Time
 }
 
-export type Time = {
-  id: number
-  nome: string
-  codigo: string
-  grupo_id: number | null
-  bandeira_url: string | null
-}
-
 export type Bolao = {
   id: string
   nome: string
   descricao: string | null
+  valor: number
   criado_em: string
 }
 
@@ -47,4 +48,30 @@ export type Chute = {
   gols_casa: number
   gols_fora: number
   criado_em: string
+}
+
+export type Pontuacao = {
+  id: string
+  chute_id: string
+  pontos: number
+  acertou_placar: boolean
+  acertou_vencedor: boolean
+}
+
+export function faseLabel(fase: Jogo['fase']) {
+  const map: Record<Jogo['fase'], string> = {
+    grupos: 'Fase de Grupos',
+    oitavas: 'Oitavas de Final',
+    quartas: 'Quartas de Final',
+    semis: 'Semifinais',
+    terceiro_lugar: '3º Lugar',
+    final: 'Final',
+  }
+  return map[fase] ?? fase
+}
+
+export function formatarData(iso: string) {
+  return new Date(iso).toLocaleString('pt-BR', {
+    day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit',
+  })
 }
